@@ -1,16 +1,19 @@
 package com.chrtc.excelTest.excelTest.utils;
 
+
 import com.chrtc.excelTest.excelTest.domain.ExcelEntity;
 
+
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.opc.OPCPackage;
+
 import org.apache.poi.poifs.filesystem.FileMagic;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ExcelUtil {
+    private static Logger logger = Logger.getLogger(ExcelUtil.class);
 
     /**
      * 读取excel文件
@@ -53,11 +57,19 @@ public class ExcelUtil {
         if (null == work) {
             throw new Exception("创建Excel工作薄为空！");
         }
+        HashUtil hash=new HashUtil();
         Sheet sheet = null;
         Row row = null;
         Row rowHead = null;
         Cell cell = null;
         String value = "";
+
+        //用于存储字符串来转换为hash值
+        String key="";
+        int hashcode=0;
+        Set<Integer> hashset =new HashSet<>();
+        //用于判断是否重复,重复为true不重复为false;默认为不重复
+        Boolean hashboolean=false;
 
         List<Map<String,Object>> dataList= new ArrayList<>();
 
@@ -73,6 +85,7 @@ public class ExcelUtil {
             if(rowHead == null){
                 continue;
             }
+
             int colNum = rowHead.getPhysicalNumberOfCells();
             String[] keyArray = new String[colNum];
             for (int k  = 0; k < colNum; k++) {
@@ -83,22 +96,54 @@ public class ExcelUtil {
             int lastRowNum = sheet.getLastRowNum();
             for (int j =1; j <= sheet.getLastRowNum(); j++) {
                 Map<String,Object> dataMap = new LinkedHashMap<String,Object>();
+                key="";
                 row = sheet.getRow(j);
                 if (row == null ) {
                     continue;
                 }
 
                 int n = 0;
-                while (n < colNum) {
-                    //这里把列循环到Map
+                while(n<colNum){
                     if(row.getCell(n)!=null){
-                        value = getCellFormatValue(row.getCell(n)).trim();
-                        dataMap.put(keyArray[n],value);
+                        value=getCellFormatValue(row.getCell(n)).trim();
+                        key=key+value;
+                    }else{
+                        value=" ";
+                        key=key+value;
                     }
                     n++;
                 }
-                value = "";
-                dataList.add(dataMap);
+                //进行查重检查
+                hashcode=hash.toHash(key);
+                if(hashset.isEmpty()){
+                    hashset.add(hashcode);
+                }else {
+                        if( hashset.contains(hashcode)){
+                            hashboolean=true;
+                            }
+                         hashset.add(hashcode);
+                }
+                if (!hashboolean){
+                    n=0;
+                    while (n < colNum) {
+                        //这里把列循环到Map
+                        if(row.getCell(n)!=null){
+                            value = getCellFormatValue(row.getCell(n)).trim();
+                            dataMap.put(keyArray[n], value);
+                        }else{
+                            value=" ";
+                            dataMap.put(keyArray[n], value);
+                        }
+                        n++;
+                    }
+                    value = "";
+                    dataList.add(dataMap);
+                }else{
+                    System.out.println("出现重复行");
+                    logger.info("出现重复行:"+key);
+                    hashboolean=false;
+                }
+
 
                /* ExcelEntity excelEntity = new ExcelEntity();
                 //把每个单元格的值付给对象的对应属性
