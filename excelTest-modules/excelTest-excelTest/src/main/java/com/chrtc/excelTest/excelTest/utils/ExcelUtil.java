@@ -70,8 +70,6 @@ public class ExcelUtil {
 //        Set<Integer> hashset =new HashSet<>();
         //用于判断是否重复,重复为true不重复为false;默认为不重复
         Boolean hashboolean=false;
-        RepeatUtil repeatUtil=new RepeatUtil();
-
         List<Map<String,Object>> dataList= new ArrayList<>();
 
         //遍历Excel中所有的sheet
@@ -92,7 +90,7 @@ public class ExcelUtil {
             for (int k  = 0; k < colNum; k++) {
                 keyArray[k] = getCellFormatValue(rowHead.getCell(k));
             }
-
+            RepeatUtil repeatUtil=new RepeatUtil();
             //遍历当前sheet中的所有行
             int lastRowNum = sheet.getLastRowNum();
             for (int j =1; j <= sheet.getLastRowNum(); j++) {
@@ -114,7 +112,6 @@ public class ExcelUtil {
 //                    }
 //                    n++;
 //                }
-
                 //进行查重检查
 //                hashcode=hash.toHash(key);
 //                if(hashset.isEmpty()){
