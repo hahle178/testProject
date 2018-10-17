@@ -124,28 +124,31 @@ public class ExcelUtil {
 //                }
 
 //                if (!hashboolean){
-//                    n=0;
-                    while (n < colNum) {
-                        //这里把列循环到Map
-                        if(row.getCell(n)!=null){
-                            value = getCellFormatValue(row.getCell(n)).trim();
-                            dataMap.put(keyArray[n], value);
-                        }else{
-                            value=" ";
-                            dataMap.put(keyArray[n], value);
+//                    n=0
+                    int num=row.getLastCellNum();
+                    //进行行数据判断,如果超出列的个数,输入日志进行记录
+                    if (num<=colNum) {
+                        while (n < colNum) {
+                            //这里把列循环到Map
+                            if (row.getCell(n) != null) {
+                                value = getCellFormatValue(row.getCell(n)).trim();
+                                dataMap.put(keyArray[n], value);
+                            } else {
+                                value = " ";
+                                dataMap.put(keyArray[n], value);
+                            }
+                            key = key +"\t"+ value;
+                            n++;
                         }
-                        key=key+value;
-                        n++;
-                    }
-                    hashboolean=repeatUtil.fileRepeat(key);
-                    value = "";
-                    if (!hashboolean){
-                    dataList.add(dataMap);
-                    }else{
-                        System.out.println("出现重复行");
-                        logger.info("出现重复行:"+key);
-                        hashboolean=false;
-                    }
+                        hashboolean = repeatUtil.fileRepeat(key);
+                        value = "";
+                        if (!hashboolean) {
+                            dataList.add(dataMap);
+                        } else {
+                            //查重的日志处理
+                            logger.info("出现重复行:" + key);
+                            hashboolean = false;
+                        }
 //                }else{
 //                    System.out.println("出现重复行");
 //                    logger.info("出现重复行:"+key);
@@ -169,6 +172,21 @@ public class ExcelUtil {
                 }
                 //遍历所有的列(把每一行的内容存放到对象中)
                 excelEntitys.add(excelEntity);*/
+                    }else{
+                        //将错位数据进行日志记录
+                        while (n < num) {
+                            //这里把列循环到Map
+                            if (row.getCell(n) != null) {
+                                value = getCellFormatValue(row.getCell(n)).trim();
+                            } else {
+                                value = " ";
+                            }
+                            key = key + "\t"+value;
+                            n++;
+                        }
+                        //这里将key传到日志记录工具中进行写入
+                        logger.info("数据出现错位"+key);
+                    }
             }
         }
         return dataList;
