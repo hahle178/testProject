@@ -66,10 +66,11 @@ public class ExcelUtil {
 
         //用于存储字符串来转换为hash值
         String key="";
-        int hashcode=0;
-        Set<Integer> hashset =new HashSet<>();
+//        int hashcode=0;
+//        Set<Integer> hashset =new HashSet<>();
         //用于判断是否重复,重复为true不重复为false;默认为不重复
         Boolean hashboolean=false;
+        RepeatUtil repeatUtil=new RepeatUtil();
 
         List<Map<String,Object>> dataList= new ArrayList<>();
 
@@ -103,28 +104,30 @@ public class ExcelUtil {
                 }
 
                 int n = 0;
-                while(n<colNum){
-                    if(row.getCell(n)!=null){
-                        value=getCellFormatValue(row.getCell(n)).trim();
-                        key=key+value;
-                    }else{
-                        value=" ";
-                        key=key+value;
-                    }
-                    n++;
-                }
+//                while(n<colNum){
+//                    if(row.getCell(n)!=null){
+//                        value=getCellFormatValue(row.getCell(n)).trim();
+//                        key=key+value;
+//                    }else{
+//                        value=" ";
+//                        key=key+value;
+//                    }
+//                    n++;
+//                }
+
                 //进行查重检查
-                hashcode=hash.toHash(key);
-                if(hashset.isEmpty()){
-                    hashset.add(hashcode);
-                }else {
-                        if( hashset.contains(hashcode)){
-                            hashboolean=true;
-                            }
-                         hashset.add(hashcode);
-                }
-                if (!hashboolean){
-                    n=0;
+//                hashcode=hash.toHash(key);
+//                if(hashset.isEmpty()){
+//                    hashset.add(hashcode);
+//                }else {
+//                        if( hashset.contains(hashcode)){
+//                            hashboolean=true;
+//                            }
+//                         hashset.add(hashcode);
+//                }
+
+//                if (!hashboolean){
+//                    n=0;
                     while (n < colNum) {
                         //这里把列循环到Map
                         if(row.getCell(n)!=null){
@@ -134,15 +137,23 @@ public class ExcelUtil {
                             value=" ";
                             dataMap.put(keyArray[n], value);
                         }
+                        key=key+value;
                         n++;
                     }
+                    hashboolean=repeatUtil.fileRepeat(key);
                     value = "";
+                    if (!hashboolean){
                     dataList.add(dataMap);
-                }else{
-                    System.out.println("出现重复行");
-                    logger.info("出现重复行:"+key);
-                    hashboolean=false;
-                }
+                    }else{
+                        System.out.println("出现重复行");
+                        logger.info("出现重复行:"+key);
+                        hashboolean=false;
+                    }
+//                }else{
+//                    System.out.println("出现重复行");
+//                    logger.info("出现重复行:"+key);
+//                    hashboolean=false;
+//                }
 
 
                /* ExcelEntity excelEntity = new ExcelEntity();
