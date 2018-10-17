@@ -32,7 +32,7 @@ public class ExcelUtil {
      * @return
      * @throws Exception
      */
-    public static List<Map<String,Object>> getBankListByExcel(InputStream in, String extString) throws Exception {
+    public static List<Map<String,Object>> getBankListByExcel(InputStream in, String extString,String fileName) throws Exception {
         Workbook work = null;
         InputStream is = FileMagic.prepareToCheckMagic(in);
         List<ExcelEntity> excelEntitys = new ArrayList<>();
@@ -57,7 +57,12 @@ public class ExcelUtil {
         if (null == work) {
             throw new Exception("创建Excel工作薄为空！");
         }
+        //创建哈希值算法的工具对象
         HashUtil hash=new HashUtil();
+        //创建查重工具的对象
+        RepeatUtil repeatUtil=new RepeatUtil();
+        //创建日志工具的对象
+        LogUtil log=new LogUtil();
         Sheet sheet = null;
         Row row = null;
         Row rowHead = null;
@@ -90,7 +95,6 @@ public class ExcelUtil {
             for (int k  = 0; k < colNum; k++) {
                 keyArray[k] = getCellFormatValue(rowHead.getCell(k));
             }
-            RepeatUtil repeatUtil=new RepeatUtil();
             //遍历当前sheet中的所有行
             int lastRowNum = sheet.getLastRowNum();
             for (int j =1; j <= sheet.getLastRowNum(); j++) {
@@ -146,7 +150,8 @@ public class ExcelUtil {
                             dataList.add(dataMap);
                         } else {
                             //查重的日志处理
-                            logger.info("出现重复行:" + key);
+                            logger.fatal("文件名为"+fileName+"的第"+j+"行数据出现重复"+key);
+                            log.ExcelLogWriting(fileName,j,key);
                             hashboolean = false;
                         }
 //                }else{
@@ -185,7 +190,8 @@ public class ExcelUtil {
                             n++;
                         }
                         //这里将key传到日志记录工具中进行写入
-                        logger.info("数据出现错位"+key);
+                        logger.fatal("文件名为"+fileName+"的第"+j+"行数据出现错位"+key);
+                        log.ExcelLogWriting(fileName,j,key);
                     }
             }
         }

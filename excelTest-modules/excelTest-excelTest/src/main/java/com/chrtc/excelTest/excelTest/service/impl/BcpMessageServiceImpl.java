@@ -120,7 +120,7 @@ public class BcpMessageServiceImpl implements BcpMessageService {
 
                 //读取excel中的内容
                 String extString = attachmentName.substring(attachmentName.lastIndexOf("."));
-                bankListByExcel = ExcelUtil.getBankListByExcel(in,extString);
+                bankListByExcel = ExcelUtil.getBankListByExcel(in,extString,attachmentName);
 
                 //生成bcp文件
                 String sysCode = "101";//数据发送方系统标识
