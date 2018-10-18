@@ -151,7 +151,7 @@ public class ExcelUtil {
                         } else {
                             //查重的日志处理
                             logger.fatal("文件名为"+fileName+"的第"+j+"行数据出现重复"+key);
-                            log.ExcelLogWriting(fileName,j,key);
+                            log.ExcelLogWriting(fileName,j,key,0);
                             hashboolean = false;
                         }
 //                }else{
@@ -191,7 +191,7 @@ public class ExcelUtil {
                         }
                         //这里将key传到日志记录工具中进行写入
                         logger.fatal("文件名为"+fileName+"的第"+j+"行数据出现错位"+key);
-                        log.ExcelLogWriting(fileName,j,key);
+                        log.ExcelLogWriting(fileName,j,key,1);
                     }
             }
         }
