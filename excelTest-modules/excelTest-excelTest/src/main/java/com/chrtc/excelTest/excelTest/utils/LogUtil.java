@@ -33,6 +33,21 @@ public class LogUtil {
             }
         }
 
+        public void CountLog(String fileName,String key){
+        try {
+            String path = "E://CountLogs/" + fileName + ".log";
+            File statText = new File(path);
+            FileOutputStream is = new FileOutputStream(statText, true);
+            OutputStreamWriter osw = new OutputStreamWriter(is);
+            Writer w = new BufferedWriter(osw);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            w.write(dateFormat+"文件名为"+fileName+"的文件总共有"+key+"列");
+            ((BufferedWriter) w).newLine();
+            w.close();
+        }catch (IOException e){
+            System.err.println("Problem writing to the file statsTest.txt");
+        }
+        }
     }
 
 

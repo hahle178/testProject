@@ -4,6 +4,9 @@ package com.chrtc.excelTest.excelTest.utils;
 import com.chrtc.excelTest.excelTest.domain.ExcelEntity;
 
 
+import org.apache.commons.logging.LogFactory;
+
+
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -12,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.FileMagic;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.LoggerFactory;
 
 
 import java.io.FileNotFoundException;
@@ -22,8 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ExcelUtil {
-    private static Logger logger = Logger.getLogger(ExcelUtil.class);
-
+    private static Logger logger = Logger.getLogger("excelfile");
+    private static Logger logger1 = Logger.getLogger("count");
     /**
      * 读取excel文件
      *
@@ -91,6 +95,8 @@ public class ExcelUtil {
             }
 
             int colNum = rowHead.getPhysicalNumberOfCells();
+            logger1.fatal("标题总列数为:"+colNum);
+            log.CountLog(fileName,colNum+"");
             String[] keyArray = new String[colNum];
             for (int k  = 0; k < colNum; k++) {
                 keyArray[k] = getCellFormatValue(rowHead.getCell(k));
