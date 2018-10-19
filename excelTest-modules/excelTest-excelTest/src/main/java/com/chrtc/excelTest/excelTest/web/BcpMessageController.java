@@ -278,6 +278,12 @@ public class BcpMessageController {
                 String code1 = "cmd"+" /k start "+ dumpdir +"/dmp.bat " + attachmentName;
                 Process exec = Runtime.getRuntime().exec(code1);
                 Process process = exec;
+            }else if(houzui.equals("txt")|houzui.equals("TXT")){
+                //读取txt文件,生成bcp文件
+                bcpMessages = BcpMessageService.readTXTAndOut(excelId);
+                String xmlPath = "E:"+File.separator +"TXT" + File.separator + "AQ_ZIP_INDEX.xml";
+                BcpMessageService.createIndexXml1(xmlPath,bcpMessages);
+                BcpMessageService.createZIP1("TXT");
             }
         }else{
             //接收表单数据，生成bcp文件

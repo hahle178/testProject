@@ -96,4 +96,14 @@ public interface BcpMessageService {
      */
     public LinkedList getEntityCreateBcp2(FieldVO fieldVO,Integer option) throws Exception;
 
+    /**
+     * 读取txt文件生成bcp文件
+     * @param excelId
+     * @return
+     */
+    LinkedList readTXTAndOut(String excelId);
+
+    void createIndexXml1(String xmlPath, LinkedList bcpMessages) throws IOException;
+
+    void createZIP1(String txt)throws Exception;
 }
