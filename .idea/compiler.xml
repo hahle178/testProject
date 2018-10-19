@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="datainterface" />
+        <module name="excelTest-excelTest" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="datainterface" target="1.8" />
+      <module name="excelTest" target="1.8" />
+      <module name="excelTest-excelTest" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="excelTest" options="-bootclasspath D:/02-SoftRunners/jdk1.8/jre/lib/rt.jar;D:/02-SoftRunners/jdk1.8/jre/lib/jce.jar" />
+      <module name="excelTest-excelTest" options="-bootclasspath D:/02-SoftRunners/jdk1.8/jre/lib/rt.jar;D:/02-SoftRunners/jdk1.8/jre/lib/jce.jar" />
+    </option>
+  </component>
+</project>
