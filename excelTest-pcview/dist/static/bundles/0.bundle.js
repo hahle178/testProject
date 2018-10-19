@@ -417,9 +417,10 @@ var _class = function (_BaseHandler) {
                 this.render(args).then(function () {
                     args.url = "/excelTest/exceltest/kjob/jobList";
                     _this7.ajaxResource(args).then(function (data) {
-                        data.data.forEach(function (value) {
+                        /*data.data.forEach(function (value) {
                             $this.jobList(value);
-                        });
+                        })*/
+                        $this.jobList(data.data);
                     });
                 });
             } else {
@@ -465,7 +466,7 @@ var _class = function (_BaseHandler) {
                 tpl: "jobList",
                 position: "append",
                 contentId: $('.addRow'),
-                data: { id: __WEBPACK_IMPORTED_MODULE_2_ezdev_pcview_utils_MiscUtils__["default"].guid(), value: value }
+                data: { id: __WEBPACK_IMPORTED_MODULE_2_ezdev_pcview_utils_MiscUtils__["default"].guid(), data: value }
             });
         }
 
@@ -9586,24 +9587,33 @@ var $imports = __webpack_require__(10);
 module.exports = function ($data) {
     'use strict';
     $data = $data || {};
-    var $$out = '', $escape = $imports.$escape, id = $data.id, value = $data.value, path = $data.path;
-    $$out += '\r\n\r\n<tr  id="';
-    $$out += $escape(id);
-    $$out += '">\r\n    <td >';
-    $$out += $escape(value.jobName);
-    $$out += '</td>\r\n    <td >';
-    $$out += $escape(value.jobPath);
-    $$out += '</td>\r\n    <td> <button e-event="href:/';
-    $$out += $escape(path);
-    $$out += '/startJob?jobPath=';
-    $$out += $escape(value.jobPath);
-    $$out += '&url=/excelTest/exceltest/kjob/runJob" class="btn  btn-xs form-delete" type="button"  title="启动">\r\n        <i class="fa fa-trash"></i>&nbsp;启动\r\n    </button>\r\n     <button e-event="href:/';
-    $$out += $escape(path);
-    $$out += '/deleteRow?id=';
-    $$out += $escape(id);
-    $$out += '&name=';
-    $$out += $escape(value.jobPath);
-    $$out += '" class="btn  btn-xs form-delete" type="button"  title="删除">\r\n        <i class="fa fa-trash"></i>&nbsp;删除\r\n    </button>\r\n    </td>\r\n</tr>';
+    var $$out = '', $each = $imports.$each, data = $data.data, value = $data.value, i = $data.i, $escape = $imports.$escape, id = $data.id, path = $data.path;
+    $$out += '\r\n';
+    $each(data, function (value, i) {
+        $$out += '\r\n    <tr  id="';
+        $$out += $escape(id);
+        $$out += '">\r\n        <td >';
+        $$out += $escape(value.jobName);
+        $$out += '</td>\r\n        <td >';
+        $$out += $escape(value.jobPath);
+        $$out += '</td>\r\n        <td> <button e-event="href:/';
+        $$out += $escape(path);
+        $$out += '/startJob?jobPath=';
+        $$out += $escape(value.jobPath);
+        $$out += '&url=/excelTest/exceltest/kjob/runJob" class="btn  btn-xs form-delete" type="button"  title="启动">\r\n            <i class="fa fa-trash"></i>&nbsp;启动\r\n        </button>\r\n         <button e-event="href:/';
+        $$out += $escape(path);
+        $$out += '/deleteRow?id=';
+        $$out += $escape(id);
+        $$out += '&name=';
+        $$out += $escape(value.jobPath);
+        $$out += '" class="btn  btn-xs form-delete" type="button"  title="删除">\r\n            <i class="fa fa-trash"></i>&nbsp;删除\r\n        </button>\r\n            <button e-event="href:/';
+        $$out += $escape(path);
+        $$out += '/deleteRow?id=';
+        $$out += $escape(id);
+        $$out += '&name=';
+        $$out += $escape(value.jobPath);
+        $$out += '" class="btn  btn-xs form-delete" type="button"  title="删除">\r\n                <i class="fa fa-trash"></i>&nbsp;编辑\r\n            </button>\r\n        </td>\r\n    </tr>\r\n';
+    });
     return $$out;
 };
 
@@ -9933,17 +9943,23 @@ module.exports = function ($data) {
         $$out += $escape(item.transName);
         $$out += '</td>\r\n        <td >';
         $$out += $escape(item.transPath);
-        $$out += '</td>\r\n        <td> <button e-event="href:/';
+        $$out += '</td>\r\n        <td>\r\n            <button e-event="href:/';
         $$out += $escape(path);
         $$out += '/startTrans?transPath=';
         $$out += $escape(item.transPath);
-        $$out += '&url=/excelTest/exceltest/ktrans/runTrans" class="btn  btn-xs form-delete" type="button"  title="启动">\r\n            <i class="fa fa-trash"></i>&nbsp;启动\r\n        </button>\r\n         <button e-event="href:/';
+        $$out += '&url=/excelTest/exceltest/ktrans/runTrans" class="btn  btn-xs form-delete" type="button"  title="启动">\r\n                <i class="fa fa-trash"></i>&nbsp;启动\r\n            </button>\r\n             <button e-event="href:/';
         $$out += $escape(path);
         $$out += '/deleteRow?id=';
         $$out += $escape(item.id);
         $$out += '&name=';
         $$out += $escape(item.transPath);
-        $$out += '" class="btn  btn-xs form-delete" type="button"  title="删除">\r\n            <i class="fa fa-trash"></i>&nbsp;删除\r\n        </button>\r\n        </td>\r\n    </tr>\r\n';
+        $$out += '" class="btn  btn-xs form-delete" type="button"  title="删除">\r\n                <i class="fa fa-trash"></i>&nbsp;删除\r\n            </button>\r\n            <button e-event="href:/';
+        $$out += $escape(path);
+        $$out += '/deleteRow?id=';
+        $$out += $escape(item.id);
+        $$out += '&name=';
+        $$out += $escape(item.transPath);
+        $$out += '" class="btn  btn-xs form-delete" type="button"  title="删除">\r\n                <i class="fa fa-trash"></i>&nbsp;编辑定时时间\r\n            </button>\r\n        </td>\r\n    </tr>\r\n';
     });
     return $$out;
 };
