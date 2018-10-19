@@ -858,7 +858,7 @@ module.exports = function ($data) {
     $$out += $escape(path);
     $$out += '/goBack" class="btn btn-primary " id="back_';
     $$out += $escape(mcid);
-    $$out += '_btn" type="button" title="返回">\r\n\t\t\t\t\t\t\t\t    <i class="fa fa-undo"></i>&nbsp;返回\r\n\t\t\t\t\t\t\t\t</button>\r\n                            </div>\r\n                            </div>\r\n                        </form>\r\n\r\n                    <!-- /.box-body -->\r\n\r\n\r\n            </div>\r\n            <!-- /.box -->\r\n        </div>\r\n        <!-- /.col -->\r\n    </div>\r\n\r\n\r\n    <!-- Your Page Content Here -->\r\n\r\n</section>\r\n<!-- /.content -->\r\n';
+    $$out += '_btn" type="button" title="返回">\r\n\t\t\t\t\t\t\t\t    <i class="fa fa-undo"></i>&nbsp;返回\r\n\t\t\t\t\t\t\t\t</button>\r\n                            </div>\r\n                            </div>\r\n                        </form>\r\n\r\n                    <!-- /.box-body -->\r\n            </div>\r\n            <!-- /.box -->\r\n        </div>\r\n        <!-- /.col -->\r\n    </div>\r\n\r\n\r\n    <!-- Your Page Content Here -->\r\n\r\n</section>\r\n<!-- /.content -->\r\n';
     return $$out;
 };
 

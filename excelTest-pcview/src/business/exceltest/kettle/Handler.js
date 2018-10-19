@@ -322,9 +322,10 @@ export default class extends BaseHandler{
             this.render(args).then(()=>{
                 args.url="/excelTest/exceltest/kjob/jobList";
                 this.ajaxResource(args).then((data) => {
-                    data.data.forEach(function (value) {
+                    /*data.data.forEach(function (value) {
                         $this.jobList(value);
-                    })
+                    })*/
+                    $this.jobList(data.data);
 
                 })
             });
@@ -332,6 +333,7 @@ export default class extends BaseHandler{
             throw new Error("参数无效，请传递如{tpl:add-(默认),contentId:list-(默认)}的JS对象");
         }
     }
+
 
     //根据查询条件查询作业
     findByJobName(args) {
@@ -363,7 +365,7 @@ export default class extends BaseHandler{
             tpl:"jobList",
             position:"append",
             contentId:$('.addRow'),
-            data:{id:miscUtils.guid(),value:value}
+            data:{id:miscUtils.guid(),data:value}
         })
     }
 
