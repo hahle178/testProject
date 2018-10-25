@@ -4,6 +4,7 @@ package com.chrtc.excelTest.excelTest.utils;
 import com.chrtc.excelTest.excelTest.domain.ExcelEntity;
 
 
+import com.chrtc.excelTest.excelTest.domain.FileMessage;
 import org.apache.commons.logging.LogFactory;
 
 
@@ -36,10 +37,12 @@ public class ExcelUtil {
      * @return
      * @throws Exception
      */
-    public static List<Map<String,Object>> getBankListByExcel(InputStream in, String extString,String fileName) throws Exception {
+    public static FileMessage getBankListByExcel(InputStream in, String extString, String fileName) throws Exception {
         Workbook work = null;
         InputStream is = FileMagic.prepareToCheckMagic(in);
+        List<List<Object>> titleList=new LinkedList<>();
         List<ExcelEntity> excelEntitys = new ArrayList<>();
+        FileMessage fileMessage=new FileMessage();
         try {
             if(".xls".equals(extString)){
                 work = new HSSFWorkbook(is);
@@ -54,15 +57,10 @@ public class ExcelUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         //创建Excel工作薄
-         //work = getWorkbook(in);
-       // work = new HSSFWorkbook(is);
         if (null == work) {
             throw new Exception("创建Excel工作薄为空！");
         }
-        //创建哈希值算法的工具对象
-        HashUtil hash=new HashUtil();
         //创建查重工具的对象
         RepeatUtil repeatUtil=new RepeatUtil();
         //创建日志工具的对象
@@ -75,10 +73,7 @@ public class ExcelUtil {
 
         //用于存储字符串来转换为hash值
         String key="";
-//        int hashcode=0;
-//        Set<Integer> hashset =new HashSet<>();
-        //用于判断是否重复,重复为true不重复为false;默认为不重复
-        Boolean hashboolean=false;
+
         List<Map<String,Object>> dataList= new ArrayList<>();
 
         //遍历Excel中所有的sheet
@@ -98,9 +93,13 @@ public class ExcelUtil {
             logger1.fatal("标题总列数为:"+colNum);
             log.CountLog(fileName,colNum+"");
             String[] keyArray = new String[colNum];
+            Map<String,Object> map=new LinkedHashMap<>();
+            List<Object> title=new LinkedList<>();
             for (int k  = 0; k < colNum; k++) {
+                title.add(getCellFormatValue(rowHead.getCell(k)));
                 keyArray[k] = getCellFormatValue(rowHead.getCell(k));
             }
+            titleList.add(title);
             //遍历当前sheet中的所有行
             int lastRowNum = sheet.getLastRowNum();
             for (int j =1; j <= sheet.getLastRowNum(); j++) {
@@ -112,30 +111,7 @@ public class ExcelUtil {
                 }
 
                 int n = 0;
-//                while(n<colNum){
-//                    if(row.getCell(n)!=null){
-//                        value=getCellFormatValue(row.getCell(n)).trim();
-//                        key=key+value;
-//                    }else{
-//                        value=" ";
-//                        key=key+value;
-//                    }
-//                    n++;
-//                }
-                //进行查重检查
-//                hashcode=hash.toHash(key);
-//                if(hashset.isEmpty()){
-//                    hashset.add(hashcode);
-//                }else {
-//                        if( hashset.contains(hashcode)){
-//                            hashboolean=true;
-//                            }
-//                         hashset.add(hashcode);
-//                }
-
-//                if (!hashboolean){
-//                    n=0
-                    int num=row.getLastCellNum();
+                int num=row.getLastCellNum();
                     //进行行数据判断,如果超出列的个数,输入日志进行记录
                     if (num<=colNum) {
                         while (n < colNum) {
@@ -150,39 +126,14 @@ public class ExcelUtil {
                             key = key +"\t"+ value;
                             n++;
                         }
-                        hashboolean = repeatUtil.fileRepeat(key);
                         value = "";
-                        if (!hashboolean) {
+                        if (!repeatUtil.fileRepeat(key)) {
                             dataList.add(dataMap);
                         } else {
                             //查重的日志处理
                             logger.fatal("文件名为"+fileName+"的第"+j+"行数据出现重复,数据内容为:"+key);
                             log.ExcelLogWriting(fileName,j,key,0);
-                            hashboolean = false;
                         }
-//                }else{
-//                    System.out.println("出现重复行");
-//                    logger.info("出现重复行:"+key);
-//                    hashboolean=false;
-//                }
-
-
-               /* ExcelEntity excelEntity = new ExcelEntity();
-                //把每个单元格的值付给对象的对应属性
-                if (row.getCell(0)!=null){
-                    excelEntity.setCapturetime(String.valueOf(getCellValue(row.getCell(0))));
-                }
-                if (row.getCell(1)!=null){
-                    excelEntity.setContent(String.valueOf(getCellValue(row.getCell(1))));
-                }
-                if (row.getCell(2)!=null){
-                    excelEntity.setDatatype(String.valueOf(getCellValue(row.getCell(2))));
-                }
-                if (row.getCell(3)!=null){
-                    excelEntity.setUrl(String.valueOf(getCellValue(row.getCell(3))));
-                }
-                //遍历所有的列(把每一行的内容存放到对象中)
-                excelEntitys.add(excelEntity);*/
                     }else{
                         //将错位数据进行日志记录
                         while (n < num) {
@@ -201,7 +152,9 @@ public class ExcelUtil {
                     }
             }
         }
-        return dataList;
+        fileMessage.setDataList(dataList);
+        fileMessage.setTitleList(titleList);
+        return fileMessage;
     }
 
 

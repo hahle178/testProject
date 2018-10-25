@@ -1,6 +1,9 @@
 package com.chrtc.excelTest.excelTest.utils;
+import org.pentaho.di.trans.steps.systemdata.SystemData;
+
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class LogUtil {
     /**
@@ -16,13 +19,14 @@ public class LogUtil {
                 OutputStreamWriter osw = new OutputStreamWriter(is);
                 Writer w = new BufferedWriter(osw);
                 SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date=new Date();
                 switch (cod){
                     case 0:{
-                        w.write(dateFormat+":文件名为"+fileName+"的第"+row+"行数据出现重复"+key);
+                        w.write(dateFormat.format(date.getTime())+":文件名为"+fileName+"的第"+row+"行数据出现重复"+key);
                         break;
                     }
                     case 1:{
-                        w.write(dateFormat+":文件名为"+fileName+"的第"+row+"行数据出现错位"+key);
+                        w.write(dateFormat.format(date.getTime())+":文件名为"+fileName+"的第"+row+"行数据出现错位"+key);
                         break;
                     }
                 }
@@ -41,7 +45,10 @@ public class LogUtil {
             OutputStreamWriter osw = new OutputStreamWriter(is);
             Writer w = new BufferedWriter(osw);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            w.write(dateFormat+"文件名为"+fileName+"的文件总共有"+key+"列");
+            Date date=new Date();
+
+
+            w.write(dateFormat.format(date.getTime())+"文件名为"+fileName+"的文件总共有"+key+"列");
             ((BufferedWriter) w).newLine();
             w.close();
         }catch (IOException e){

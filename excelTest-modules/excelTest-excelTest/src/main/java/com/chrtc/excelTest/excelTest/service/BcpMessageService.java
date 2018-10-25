@@ -106,4 +106,6 @@ public interface BcpMessageService {
     void createIndexXml1(String xmlPath, LinkedList bcpMessages) throws IOException;
 
     void createZIP1(String txt)throws Exception;
+
+    LinkedList readXMLAndOut(String excelId);
 }

@@ -284,6 +284,11 @@ public class BcpMessageController {
                 String xmlPath = "E:"+File.separator +"TXT" + File.separator + "AQ_ZIP_INDEX.xml";
                 BcpMessageService.createIndexXml1(xmlPath,bcpMessages);
                 BcpMessageService.createZIP1("TXT");
+            }else if(houzui.equals("xml")|houzui.equals("XML")){
+                bcpMessages = BcpMessageService.readXMLAndOut(excelId);
+                String xmlPath = "E:"+File.separator +"XML" + File.separator + "AQ_ZIP_INDEX.xml";
+                BcpMessageService.createIndexXml(xmlPath,bcpMessages);
+                BcpMessageService.createZIP("XML");
             }
         }else{
             //接收表单数据，生成bcp文件
